@@ -49,7 +49,7 @@ namespace SqlDTOGenerator.Database
                                 })
                                 .ToList();
 
-                string className = table;
+                string className = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(table);
                 string filePath = Path.Combine(json.OutputDirectory, $"{className}.cs");
 
                 using (StreamWriter sw = new StreamWriter(filePath))
@@ -61,7 +61,7 @@ namespace SqlDTOGenerator.Database
 
                     foreach (var column in columns)
                     {
-                        await sw.WriteLineAsync($"    public {column.DataType} {column.ColumnName} {{ get; set; }}");
+                        await sw.WriteLineAsync($"    public {column.DataType} {System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(column.ColumnName.ToLower())} {{ get; set; }}");
                     }
 
                     await sw.WriteLineAsync("}");
