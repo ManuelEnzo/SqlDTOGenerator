@@ -1,0 +1,125 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:SqlDTOGeneratorDesktopApp.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:conv="using:SqlDTOGeneratorDesktopApp.Converter"
+        xmlns:li="using:LoadingIndicators.Avalonia"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="900"
+        x:Class="SqlDTOGeneratorDesktopApp.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="SqlDTOGeneratorDesktopApp">
+
+  <Window.Resources>
+    <conv:BooleanYesNoConverter x:Key="BooleanYesNoConverter" />
+  </Window.Resources>
+
+  <Grid ColumnDefinitions="Auto, 2*">
+    <!-- Left Panel -->
+    <StackPanel Grid.Column="0" Background="Gray" Margin="5" IsEnabled="{Binding IsBusy, Converter={StaticResource BooleanYesNoConverter}}">
+      <!-- Instance Input -->
+      <Label Content="Instance:" Foreground="{DynamicResource HighlightBrush}" />
+      <TextBox HorizontalAlignment="Stretch" Text="{Binding OptionsDatabase.Instance}" Margin="0,0,0,10" />
+
+      <!-- Database Input -->
+      <Label Content="Database:" Foreground="{DynamicResource HighlightBrush}" />
+      <TextBox HorizontalAlignment="Stretch" Text="{Binding OptionsDatabase.Database}" Margin="0,0,0,10" />
+
+      <!-- User Input -->
+      <Label Content="User:" Foreground="{DynamicResource HighlightBrush}" />
+      <TextBox HorizontalAlignment="Stretch" Text="{Binding OptionsDatabase.User}" Margin="0,0,0,10" />
+
+      <!-- Password Input -->
+      <Label Content="Password:" Foreground="{DynamicResource HighlightBrush}" />
+      <TextBox HorizontalAlignment="Stretch" Text="{Binding OptionsDatabase.Password}" PasswordChar="*" Margin="0,0,0,10" />
+
+      <!-- Optional Values -->
+      <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+          <Label Content="Integrated Security:" Foreground="{DynamicResource HighlightBrush}" />
+          <CheckBox IsChecked="{Binding OptionsDatabase.IntegratedSecurity}" Margin="10,0,10,0" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+          <Label Content="Trusted Connection:" Foreground="{DynamicResource HighlightBrush}" />
+          <CheckBox IsChecked="{Binding OptionsDatabase.TrustedConnection}" Margin="10,0,0,0" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+          <Label Content="Connection Timeout:" Foreground="{DynamicResource HighlightBrush}" />
+          <NumericUpDown Value="{Binding OptionsDatabase.ConnectionTimeout}" Minimum="0" Margin="10,0,0,0" />
+        </StackPanel>
+      </StackPanel>
+
+      <!-- Folder Output Path -->
+      <Label Content="File Output Path" Foreground="{DynamicResource HighlightBrush}" Margin="0, 5, 0, 10"/>
+      <Grid Margin="0,0,0,10">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="0" Content="Browse" Margin="0,0,5,0" Command="{Binding OpenFileDialogCommand}"/>
+        <TextBox Grid.Column="1"
+                 MaxWidth="250"
+                 Text="{Binding OptionsDatabase.FolderDto}" Margin="0,0,0,0" />
+      </Grid>
+
+      <!-- Separator -->
+      <Separator Margin="0,10,0,10" />
+
+      <!-- Buttons -->
+      <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto, Auto">
+        <!-- Pulsante Test Connection -->
+        <Button Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Content="Test Connection" Command="{Binding TestConnectionCommand}"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Margin="5" Padding="10" />
+        <!-- Aggiungi spazio attorno al pulsante -->
+
+        <!-- Pulsante Generate DTO -->
+        <Button Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="Generate DTO" Command="{Binding GenerateDtoCommand}"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Margin="5" Padding="10"/>
+        <!-- Aggiungi spazio attorno al pulsante -->
+
+        <!-- Pulsante Retrieve Data -->
+        <Button Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Content="Retrieve Data" Command="{Binding RetrieveDataCommand}"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Margin="5" Padding="10"/>
+        <!-- Aggiungi spazio attorno al pulsante -->
+      </Grid>
+
+
+
+    </StackPanel>
+
+    <!-- Right Panel: DataGrid -->
+    <StackPanel Grid.Column="1" Background="{DynamicResource PrimaryColor}">
+      <li:LoadingIndicator IsActive="{Binding IsBusy}" Mode="Wave" SpeedRatio="1.2" Width="100" />
+
+      <DataGrid Margin="20" ItemsSource="{Binding ListOfTable, UpdateSourceTrigger=PropertyChanged}"
+                GridLinesVisibility="All"
+                BorderThickness="1" BorderBrush="Gray" MaxHeight="600">
+
+        <DataGrid.Columns>
+          <DataGridTextColumn Header="Table" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False"/>
+          <DataGridCheckBoxColumn Header="Checked" Binding="{Binding IsSelected,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False"/>
+          <DataGridCheckBoxColumn Header="Elaborated" Binding="{Binding IsElaborated,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
+          <DataGridTextColumn Header="Message" Binding="{Binding Message, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+        </DataGrid.Columns>
+        <DataGrid.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="Select All" Command="{Binding SelectAllAsync}" CommandParameter="true"/>
+            <MenuItem Header="Deselect All" Command="{Binding SelectAllAsync}" CommandParameter="false"/>
+          </ContextMenu>
+        </DataGrid.ContextMenu>
+      </DataGrid>
+    </StackPanel>
+  </Grid>
+</Window>
