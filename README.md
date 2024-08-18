@@ -30,15 +30,27 @@ Getting Started
 
 ### Installation
 
-1.  bashCopia codicegit clone https://github.com/ManuelEnzo/SqlDTOGenerator.gitcd SqlDTOGenerator
+1.   ```bash
+     git clone https://github.com/ManuelEnzo/SqlDTOGenerator.git
+     cd SqlDTOGenerator
+     ```
     
-2.  Ensure you have the required dependencies by restoring the NuGet packages.bashCopia codicedotnet restore
+2.  Ensure you have the required dependencies by restoring the NuGet packages.
+       ```bash
+       dotnet restore
+       ```
     
 
 ### Configuration
 
-1.  Create or update the appsettings.json file in the root directory of the project with the following structure:jsonCopia codice{ "ConnectionString": "Data Source=localhost;Initial Catalog=NameOfDB;Integrated Security=True;", "OutputDirectory": "path/to/output/directory"}
-    
+1.  Create or update the appsettings.json file in the root directory of the project with the following structure:
+       ```json
+       {
+           "ConnectionString": "Data Source=localhost;Initial Catalog=NameOfDB;Integrated Security=True;",
+           "OutputDirectory": "path/to/output/directory"
+       }
+    ```
+       
     *   ConnectionString: The connection string to your SQL Server database.
         
     *   OutputDirectory: The directory where the generated DTO files will be saved.
@@ -46,9 +58,12 @@ Getting Started
 
 ### Usage
 
-1.  Execute the application to generate DTO classes from the database schema.bashCopia codicedotnet run
+1.  Execute the application to generate DTO classes from the database schema.
+    ```bash
+    dotnet run
+    ```
     
-2.  After execution, the generated DTO files will be located in the directory specified by OutputDirectory. Each table in the database will have a corresponding .cs file representing its schema.
+3.  After execution, the generated DTO files will be located in the directory specified by OutputDirectory. Each table in the database will have a corresponding .cs file representing its schema.
     
 
 ### Code Overview
@@ -84,11 +99,16 @@ Getting Started
 
 ### Installation
 
-1.  bashCopia codicegit clone https://github.com/ManuelEnzo/SqlDTOGeneratorDesktopApp.gitcd SqlDTOGeneratorDesktopApp
+1.   ```bash
+     git clone https://github.com/ManuelEnzo/SqlDTOGeneratorDesktopApp.git
+     cd SqlDTOGeneratorDesktopApp
+     ```
     
-2.  Ensure you have the required dependencies by restoring the NuGet packages.bashCopia codicedotnet restore
-    
-
+2.  Ensure you have the required dependencies by restoring the NuGet packages.
+    ```bash
+    dotnet restore
+    ```
+   
 ### Configuration
 
 1.  The application allows users to configure database connection settings and output directory through the UI. These settings can be adjusted in the MainWindowViewModel and saved for future use.
@@ -124,13 +144,18 @@ Getting Started
 
 1.  Click on the "Fork" button at the top-right corner of the repository page on GitHub.
     
-2.  bashCopia codicegit checkout -b your-branch-name
-    
+2.  ```bash
+    git checkout -b your-branch-name
+    ```
 3.  Edit the code or documentation as needed.
     
-4.  bashCopia codicegit add .git commit -m "Description of changes"
+4.  ```bash
+    git add .git commit -m "Description of changes"
+    ```
     
-5.  bashCopia codicegit push origin your-branch-name
+5.  ```bash
+    git push origin your-branch-name
+    ```
     
 6.  Go to the original repository and click on "New Pull Request". Select your branch and submit the pull request.
     
