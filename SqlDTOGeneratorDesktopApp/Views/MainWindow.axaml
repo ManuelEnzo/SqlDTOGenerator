@@ -101,7 +101,18 @@
 
     <!-- Right Panel: DataGrid -->
     <StackPanel Grid.Column="1" Background="{DynamicResource PrimaryColor}">
-      <li:LoadingIndicator IsActive="{Binding IsBusy}" Mode="Wave" SpeedRatio="1.2" Width="100" />
+
+      <StackPanel>
+        <Grid ColumnDefinitions="*, *, *">
+          
+          <li:LoadingIndicator Grid.Column="1" IsActive="{Binding IsBusy}" Mode="Wave" SpeedRatio="1.2" Width="100" />
+          
+          <TextBlock Grid.Column="2" 
+                     TextAlignment="Center" 
+                     VerticalAlignment="Center"
+                     Text="{Binding IsLoadingMessage, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+        </Grid>
+      </StackPanel>
 
       <DataGrid Margin="20" ItemsSource="{Binding ListOfTable, UpdateSourceTrigger=PropertyChanged}"
                 GridLinesVisibility="All"

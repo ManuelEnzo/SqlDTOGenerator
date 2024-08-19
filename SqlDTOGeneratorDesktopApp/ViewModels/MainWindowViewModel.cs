@@ -130,6 +130,8 @@ namespace SqlDTOGeneratorDesktopApp.ViewModels
                 {
                     await Task.Run(async () =>
                     {
+                        int tableCount = 0;
+                        int totalCount = ListOfTable.Where(x => x.IsSelected).ToList().Count;
                         foreach (var table in ListOfTable.Where(x => x.IsSelected).ToList())
                         {
                             try
@@ -162,12 +164,18 @@ namespace SqlDTOGeneratorDesktopApp.ViewModels
 
                                 await sw.WriteLineAsync("}");
 
+                                tableCount += 1;
                                 table.IsElaborated = true;
                                 table.Message = "Elaborated";
+                                
                             }
                             catch (Exception ex)
                             {
                                 table.Message = ex.Message;
+                            }
+                            finally
+                            {
+                                IsLoadingMessage = $"Elaborated {tableCount} of {totalCount} total DTO"; 
                             }
                         }
                     });
@@ -176,6 +184,7 @@ namespace SqlDTOGeneratorDesktopApp.ViewModels
             finally
             {
                 IsBusy = false;
+                IsLoadingMessage = string.Empty;
             }
         }
 
@@ -414,6 +423,9 @@ namespace SqlDTOGeneratorDesktopApp.ViewModels
         /// </summary>
         [ObservableProperty]
         private OptionDatabase _optionsDatabase;
+
+        [ObservableProperty]
+        private string _isLoadingMessage;
 
         #endregion
     }
